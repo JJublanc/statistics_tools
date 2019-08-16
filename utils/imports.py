@@ -1,10 +1,13 @@
 # Basics
-import scipy.stats as scs
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 import operator
+
+# Stats
+import scipy.stats as scs
+from scipy.stats import norm
 
 # Vizualisation basics
 import matplotlib.pyplot as plt
