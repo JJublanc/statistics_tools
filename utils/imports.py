@@ -1,7 +1,6 @@
 # Basics
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import random
 import operator
 
@@ -15,6 +14,13 @@ import matplotlib.colors as clr
 get_ipython().magic(u'matplotlib inline')
 import seaborn as sns
 sns.set_style("whitegrid")
+
+# Matplotlyb 3D
+from mpl_toolkits import mplot3d
+
+# Colors
+from matplotlib import cm
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 
 # Vizualisation Plotly
 import plotly.plotly as py
