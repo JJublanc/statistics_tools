@@ -152,3 +152,74 @@ def plot_ppf_loi(loi):
     def f(p):
         plot_ppf(p,loi)
     return f
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+
+def plot_proba(S, 
+               label_pos, 
+               limite_name, 
+               stat_name="S", 
+               sym = False,
+               message = True,
+               message_1 = False,
+               message_2 = False,
+               fontsize_message_1 = 10,
+               fontsize_message_2 = 10,
+               loi = scs.norm(0,1)):
+    
+    sigma = loi.std()
+    mean = loi.mean()
+    a = S
+    b = a + sigma*8
+    
+    if not message :
+        message_1 = ""
+        message_2 = ""
+    else:
+        if not message_1:
+            message_1 = r"$P({} > ${})".format(stat_name,limite_name)
+        if not message_2:
+            message_2 = r"$P({} < -${})".format(stat_name,limite_name)
+
+    
+    # integral limits
+    x = np.linspace(mean-4*sigma,mean+4*sigma)
+    y = loi.pdf(x)
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y, 'r', linewidth=2)
+    ax.set_ylim(bottom=0)
+
+    # Make the shaded region
+    ix = np.linspace(a, b)
+    iy = loi.pdf(ix)
+    verts = [(a, 0), *zip(ix, iy), (b, 0)]
+    poly = Polygon(verts, facecolor='0.8', edgecolor='0.5')
+    ax.add_patch(poly)
+    
+    ax.text(label_pos, 0.15 * (np.max(y)), message_1,
+            horizontalalignment='center', fontsize=fontsize_message_1)
+
+
+    if sym :
+        ix_sym = np.linspace(mean-b, mean-a)
+        iy_sym = loi.pdf(ix_sym)
+        verts_sym = [(mean-b, 0), *zip(ix_sym, iy_sym), (mean-a, 0)]
+        poly_sym = Polygon(verts_sym, facecolor='0.8', edgecolor='0.5')
+        ax.add_patch(poly_sym)
+        
+        ax.text(mean-label_pos, 0.15 * (np.max(y)), message_2 ,
+            horizontalalignment='center', fontsize=fontsize_message_2)
+
+    fig.text(0.9, 0.05, 'Values')
+    fig.text(0.1, 0.9, 'Density')
+
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+
+    ax.set_xticks([])
+    ax.set_xticklabels(('$a$', '$b$'))
+    ax.set_yticks([])
